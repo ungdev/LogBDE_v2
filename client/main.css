@@ -1,0 +1,43 @@
+
+#account{
+    float:right;
+}
+
+.login-display-name, .anticon-user{
+    color:white;
+}
+.ant-layout-content{
+    background: #f0f2f5;
+}
+
+.center{
+    text-align: center;
+}
+
+.logo{
+  width: 120px;
+    height: 31px;
+    background: url('ung.png');
+    margin: 16px 24px 16px 0;
+    float: left;
+}
+
+.custom-filter-dropdown {
+    padding: 8px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+  }
+  
+  .custom-filter-dropdown input {
+    width: 130px;
+    margin-right: 8px;
+  }
+  
+  .custom-filter-dropdown button {
+    margin-right: 8px;
+  }
+  
+  .highlight {
+    color: #f50;
+  }
