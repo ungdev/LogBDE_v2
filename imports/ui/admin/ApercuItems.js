@@ -37,7 +37,6 @@ import { Items } from '/imports/api/Collections.js'
     }
   
     render() {
-      console.log(this);
       const columns = [{
         title: 'Nom',
         dataIndex: 'nom',
@@ -75,6 +74,10 @@ import { Items } from '/imports/api/Collections.js'
             </span>
           ) : text;
         },
+      },{
+        title: 'Code barre',
+        dataIndex: 'key',
+        key: 'codebarre',
       }, {
         title: 'Description',
         dataIndex: 'description',
@@ -96,19 +99,19 @@ import { Items } from '/imports/api/Collections.js'
         }],
         onFilter: (value, record) => record.statut.indexOf(value) === 0,
       },{
-        title: 'operation',
+        title: 'Operation',
         dataIndex: 'operation',
         render: (text, record) => {
           return (
             Items.find().count() >= 1
               ? (
                 <Popconfirm title="êtes vous sûr de supprmier cette objet ?" onConfirm={() => this.handleDelete(record.key)}>
-                  <a href="javascript:;">Delete</a>
+                  <a ><Icon type="delete"  />Delete</a>
                 </Popconfirm>
               ) : null
           );
         },
       }];
-      return <Table columns={columns} dataSource={Items.find({}).fetch().map(item =>{return {key:item._id,statut:item.statut,nom:item.nom,description:item.description}})} />;
+      return <Table pagination = {{pageSize:5, pageSizeOptions: ['5', '10','50'], showSizeChanger: true, showTotal:(total, range) => `${range[0]}-${range[1]} des ${total} objets`}} columns={columns} dataSource={Items.find({}).fetch().map(item =>{return {key:item._id,statut:item.statut,nom:item.nom,description:item.description}})} />;
     }
   }

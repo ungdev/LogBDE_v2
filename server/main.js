@@ -9,7 +9,6 @@ import '/server/methods.js'
 Meteor.startup(() => {
   Roles.addUsersToRoles('JGsYbq2LxKHLLzXL2', 'admin');
   Roles.addUsersToRoles('JGsYbq2LxKHLLzXL2', 'super-admin');
-
 });
 
 Meteor.publish('userData',function(){

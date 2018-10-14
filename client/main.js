@@ -1,10 +1,11 @@
 
 
 import '/client/routes.js'
-import { Items } from '/imports/api/Collections.js';
+import '/imports/api/Collections.js';
 
 Meteor.subscribe('userData');
 Meteor.subscribe('items');
+Meteor.subscribe('reservations')
 
 FlowRouter.wait();
 
