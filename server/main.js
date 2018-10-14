@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { _ } from 'meteor/underscore'
 import { Items } from '/imports/api/Collections.js';
-
+import { Reservations } from '/imports/api/Collections.js';
+import { Cart } from '/imports/api/Collections.js';
 import '/server/methods.js'
 
 //Meteor.users.remove({})
@@ -12,14 +13,19 @@ Meteor.startup(() => {
 });
 
 Meteor.publish('userData',function(){
-  if(!this.userId)
-    this.ready();
-
     return Meteor.users.find(this.userId)
 })
 
 Meteor.publish('items', function(){
   return Items.find({})
+})
+
+Meteor.publish('reservations',function(){
+  return Reservations.find({})
+})
+
+Meteor.publish('cart',function(){
+  return Cart.find(this.userId)
 })
 
 Accounts.onCreateUser((options, user) => {

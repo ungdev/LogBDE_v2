@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Table, Input, Button, Icon, message,Popconfirm } from 'antd';
+import { Table, Input, Button, Icon, message, Popconfirm } from 'antd';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import { Items } from '/imports/api/Collections.js'
 
@@ -13,9 +13,6 @@ import { Items } from '/imports/api/Collections.js'
       };   
     }
 
-    
-    
-  
     handleSearch = (selectedKeys, confirm) => () => {
       confirm();
       this.setState({ searchText: selectedKeys[0] });

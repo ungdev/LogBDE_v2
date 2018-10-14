@@ -31,6 +31,9 @@ const ModalCreateItem = Form.create()(
             <FormItem label="Commentaire sur l'état de l'objet">
               {getFieldDecorator('etat')(<TextArea autosize />)}
             </FormItem>
+            <FormItem label="Caution">
+              {getFieldDecorator('caution')(<Input />)}
+            </FormItem>
           </Form>
         </Modal>
       );
@@ -61,7 +64,7 @@ export default class AddItem extends React.Component {
       }
 
       console.log('Received values of form: ', values);
-      Meteor.call('addItem', values.nom,values.description,values.etat,(error,result)=>{
+      Meteor.call('addItem', values.nom,values.description,values.etat,values.caution,(error,result)=>{
         if(error)
           message.error(error.reason)
         else{

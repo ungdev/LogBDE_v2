@@ -1,6 +1,6 @@
 
 import { Items } from '/imports/api/Collections.js';
-
+import { Cart } from '/imports/api/Collections.js';
 Meteor.methods({
     getUsernames(value){
 
@@ -27,7 +27,7 @@ Meteor.methods({
         Roles.addUsersToRoles(value, 'admin');
     },
 
-    addItem(nom,description,etat){
+    addItem(nom,description,etat,caution){
 
         if(!Roles.userIsInRole(this.userId,'admin'))
             throw new Meteor.Error('Oups','You are not an admin !')
@@ -35,12 +35,15 @@ Meteor.methods({
         check(nom,String)
         check(description, String)
         check(etat, String)
+        if(!(!isNaN(parseFloat(caution)) && isFinite(caution) && caution > 0))
+            throw new Meteor.Error('Oups','le prix de la caution n est pas correct')
 
         Items.insert({
             nom,
             description,
             etat,
-            statut:"disponible" 
+            statut:"disponible",
+            caution
         })  // ['disponible','emprunté','réservé']
     },
 
@@ -90,11 +93,61 @@ Meteor.methods({
             throw new Meteor.Error('Oups','cette objet est soit réservé soit emprunté')
         Items.remove(id)
     },
-    getAllItems(){
-        let items = Items.find();
-        let tmp = items.map((item)=>{
-            return {key:item._id,statut:item.statut,nom:item.nom,description:item.description}
+    addToCart(itemId){
+        if(!this.userId)
+            throw new Meteor.Error('Oups','You are not logged in')
+        
+        let item = Items.findOne(itemId)
+        if(!item || item.statut !== 'disponible')
+            throw new Meteor.Error('Oups','Cet Objet n est pas dispo !')
+
+        Items.update(itemId,{
+            $set:{
+                statut:'réservé',
+                etudiant:this.userId
+            }
         })
-        return tmp;
+
+        Cart.update(this.userId, {
+            $set:{
+                lastModified : new Date(),
+                isActive: true
+            },
+            $push:{
+                carted: {
+                    _id:itemId,
+                    nom:item.nom,
+                    caution:item.caution
+                }      
+            },
+            $inc:{
+                caution:item.caution
+            }
+        },{upsert: true})
+    },
+    deleteFromCart(itemId){
+        if(!this.userId)
+            throw new Meteor.Error('Oups','You are not logged in')
+        
+        let item = Items.findOne(itemId)
+        if(!item || item.etudiant !== this.userId)
+            throw new Meteor.Error('Oups','l objet n existe pas ou vous ne l aver pas réservé')
+
+            Items.update(itemId,{
+                $set:{
+                    statut:'disponible',
+                    etudiant:null
+                }
+            })
+            Cart.update(this.userId, {
+                $set:{
+                    lastModified : new Date(),
+                    isActive: true
+                },
+                $pull:{
+                    carted: itemId                  
+                }
+            })
+        
     }
 })

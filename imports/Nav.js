@@ -1,6 +1,6 @@
 import AccountsUI from '/imports/ui/AccountsUI.js';
 import React, { Component } from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon,Badge } from 'antd';
 import '/client/main.css'
 
 
@@ -65,8 +65,10 @@ export default class Nav extends Component {
     if(!Meteor.userId())
     return
 
-  return(<Menu.Item key="reservation">   
-          <a href="/reservation" ><Icon type="form" />Reservation</a>
+  return(<Menu.Item key="reservation">
+             
+            <a href="/reservation" ><Icon type="form" /><Badge count={5} >Reservation</Badge></a>
+          
         </Menu.Item>)
   }
 
@@ -82,9 +84,9 @@ export default class Nav extends Component {
         style={{ lineHeight: '64px' }}
       >
         {this.renderOverview()}
-
+        
         {this.renderReservation()}
-
+        
         {this.renderAdminMenu()}
 
         <Menu.Item id="account" disabled key="utt" >
