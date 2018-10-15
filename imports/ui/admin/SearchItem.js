@@ -1,6 +1,6 @@
 import React from 'react'
 import { Input, message, Modal,Form } from 'antd';
-
+import { Items } from '/imports/api/Collections.js'
 const Search = Input.Search;
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -51,17 +51,24 @@ export default class SearchItem extends React.Component {
             item: {nom:'',description:'',etat:''}
         }
     }
-    handleSearch = (value) =>{
+    componentWillUnmount(){
+        this.state.itemsSub.stop();
+      }
+      componentDidMount(){
+        this.state.itemsSub = Meteor.subscribe('items')
+      }
+      
+    handleSearch = (itemId) =>{
         if(value.trim() == '')
             return
-        Meteor.call('getItem',value,(error, result) =>{
-            if(error){
-                message.error(error.reason)
-            }else{ 
-                this.setState({visible:true,item:result})
-            }
-        })
-    }
+        let item = Items.findOne(itemId)
+        if(!item){
+            message.error('l objet n existe pas')
+            return
+        }
+            this.setState({visible:true,item:item})            
+        }
+    
 
     handleUpdate = () =>{
         const form = this.formRef.props.form;

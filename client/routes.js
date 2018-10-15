@@ -8,7 +8,7 @@ import OverviewPage from '/imports/ui/pages/OverviewPage.js'
 import ReservationPage from '/imports/ui/pages/ReservationPage.js'
 import RetourPage from '/imports/ui/pages/RetourPage.js'
 import HomePage from '/imports/ui/pages/HomePage.js'
-import { AddAdmin } from '/imports/ui/pages/AddAdmin.js'
+import { AddAdmin } from '/imports/ui/superAdmin/AddAdmin.js'
 
 import { MainLayout } from '/imports/MainLayout.js'
 
