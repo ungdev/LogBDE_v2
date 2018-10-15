@@ -1,13 +1,15 @@
 import AccountsUI from '/imports/ui/AccountsUI.js';
 import React, { Component } from 'react';
 import { Menu, Icon,Badge } from 'antd';
+import { Cart } from '/imports/api/Collections.js'
+import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import '/client/main.css'
 
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
-export default class Nav extends Component {
+export default class Nav extends TrackerReact(Component) {
   constructor(props){
     super(props)
     this.state = {
@@ -67,7 +69,7 @@ export default class Nav extends Component {
 
   return(<Menu.Item key="reservation">
              
-            <a href="/reservation" ><Icon type="form" /><Badge count={5} >Reservation</Badge></a>
+            <a href="/reservation" ><Icon type="form" /><Badge count={Cart.find(Meteor.userId()).fetch()[0] ? Cart.find(Meteor.userId()).fetch()[0].carted.length:0} >Reservation</Badge></a>
           
         </Menu.Item>)
   }

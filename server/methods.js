@@ -1,6 +1,8 @@
 
 import { Items } from '/imports/api/Collections.js';
 import { Cart } from '/imports/api/Collections.js';
+import { Reservations } from '/imports/api/Collections.js';
+
 Meteor.methods({
     getUsernames(value){
 
@@ -131,7 +133,7 @@ Meteor.methods({
         
         let item = Items.findOne(itemId)
         if(!item || item.etudiant !== this.userId)
-            throw new Meteor.Error('Oups','l objet n existe pas ou vous ne l aver pas réservé')
+            throw new Meteor.Error('Oups','l objet n existe pas ou vous ne l avez pas réservé')
 
             Items.update(itemId,{
                 $set:{
@@ -142,12 +144,23 @@ Meteor.methods({
             Cart.update(this.userId, {
                 $set:{
                     lastModified : new Date(),
-                    isActive: true
+                    statut: 'active'
                 },
                 $pull:{
-                    carted: itemId                  
+                    carted: {_id:itemId }                
+                },
+                $inc:{
+                    caution:-item.caution
                 }
             })
         
+    },
+    createReservation(items){
+        if(!this.userId)
+            throw new Meteor.Error('Oups','You are not logged in')
+        
+        check(items,Array)
+        // let 
+        // Reservations
     }
 })
