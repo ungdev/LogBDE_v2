@@ -1,8 +1,8 @@
 # LogBDE_v2
 Meteor, React, Mongo, Antd et du café
 
-normalement c'est : `meteor npm install`
-mais si t'as des questions n'hésite pas
+normalement c'est : `meteor npm install` mais si t'as des questions n'hésite pas
+
 j'ai aussi adapté ca pour l'UTT avec useraccounts : https://atmospherejs.com/jav/accounts-utt
 
 Si tu veux t'amuser avec le panel admin ajoute toi y: https://github.com/ungdev/LogBDE_v2/blob/1514f956b3477cf6060fc73e87f2f13511ea7114/server/main.js#L10
