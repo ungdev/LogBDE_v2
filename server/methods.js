@@ -155,11 +155,16 @@ Meteor.methods({
             })
         
     },
-    createReservation(items){
+    createReservation(){
         if(!this.userId)
             throw new Meteor.Error('Oups','You are not logged in')
-        
-        check(items,Array)
+        let panier = Cart.findOne(this.userId);
+        let user = Meteor.users.findOne(this.userId)
+        Reservations.insert({
+            etudiant:user.lastName+' '+user.firstName,
+            objets: panier.carted.map(item=>{return item.nom}),
+            caution : panier.caution
+        })
         // let 
         // Reservations
     }

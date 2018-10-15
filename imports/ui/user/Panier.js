@@ -29,7 +29,13 @@ export default class Panier extends TrackerReact(React.Component) {
   }
 
   createReservation = () =>{
-      console.log('yo');
+      Meteor.call('createReservation',(error,result)=>{
+        if(error){
+          message.error(error.reason)
+        }else{
+          message.success('Réservation créée')
+        }
+      })
   }
 
   render() {

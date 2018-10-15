@@ -76,7 +76,7 @@ export default class EmpruntPage extends TrackerReact(Component) {
         dataIndex: 'operation',
         render: (text, record) => {
           return (
-            Items.find().count() >= 1
+            Reservations.find().count() >= 1
               ? (
                 <Popconfirm title="Valider la réservation et la transformer en emprunt ?" onConfirm={() => this.handleReservation(record.key)}>
                   <a ><Icon type="printer"  />Valider la réservation</a>
@@ -90,8 +90,8 @@ export default class EmpruntPage extends TrackerReact(Component) {
             dataSource={Reservations.find({}).fetch().map(item =>{
                 return {
                     key:item._id,
-                    etudiant:item.etudiant.firstName+' '+item.etudiant.lastName,
-                    objets:item.objets.map(o =>{return o.nom}).toString(),
+                    etudiant:item.etudiant,
+                    objets:item.objets.toString(),
                     caution:item.caution
                 }
             }
