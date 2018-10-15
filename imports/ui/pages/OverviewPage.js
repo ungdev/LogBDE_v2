@@ -7,7 +7,15 @@ import Item from '/imports/ui/Item.js';
 export default class OverviewPage extends TrackerReact(Component) {
     constructor(props){
         super(props)
+        this.state = {}
     }
+
+    componentWillUnmount(){
+        this.state.itemsSub.stop();
+      }
+      componentDidMount(){
+        this.state.itemsSub = Meteor.subscribe('items')
+      }
 
     renderItems(){
         let items = Items.find({}).fetch()

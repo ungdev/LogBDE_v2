@@ -9,6 +9,19 @@ import TrackerReact from 'meteor/ultimatejs:tracker-react';
 
 export default class Panier extends TrackerReact(React.Component) {
 
+  constructor(props){
+    super(props)
+    this.state = {}
+  }
+
+  componentWillUnmount(){
+    this.state.cartSub.stop();
+  }
+  componentDidMount(){
+    this.state.cartSub = Meteor.subscribe('cart')
+  }
+
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {

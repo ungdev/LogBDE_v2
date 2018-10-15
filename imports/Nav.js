@@ -16,6 +16,13 @@ export default class Nav extends TrackerReact(Component) {
       current: null,
     }
   }
+
+  componentWillUnmount(){
+    this.state.cartSub.stop();
+  }
+  componentDidMount(){
+    this.state.cartSub = Meteor.subscribe('cart')
+  }
   
 
   handleClick = (e) => {

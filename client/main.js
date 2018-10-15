@@ -4,10 +4,9 @@ import '/client/routes.js'
 import '/imports/api/Collections.js';
 
 Meteor.subscribe('userData');
-Meteor.subscribe('items');
-Meteor.subscribe('reservations')
+Meteor.subscribe('items')
 Meteor.subscribe('cart')
-
+Meteor.subscribe('reservations')
 FlowRouter.wait();
 
 Tracker.autorun(() => {

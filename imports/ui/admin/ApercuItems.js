@@ -9,8 +9,14 @@ import { Items } from '/imports/api/Collections.js'
     constructor(props){
       super(props)
       this.state = {
-        searchText: '',
+        searchText: ''
       };   
+    }
+    componentWillUnmount(){
+      this.state.itemsSub.stop();
+    }
+    componentDidMount(){
+      this.state.itemsSub = Meteor.subscribe('items')
     }
 
     handleSearch = (selectedKeys, confirm) => () => {

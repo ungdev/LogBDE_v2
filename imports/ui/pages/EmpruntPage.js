@@ -12,6 +12,13 @@ export default class EmpruntPage extends TrackerReact(Component) {
           searchText: '',
         };   
       }
+      componentWillUnmount(){
+        this.state.reservationsSub.stop();
+      }
+      componentDidMount(){
+        this.state.reservationsSub = Meteor.subscribe('reservations')
+      }
+
       handleSearch = (selectedKeys, confirm) => () => {
         confirm();
         this.setState({ searchText: selectedKeys[0] });

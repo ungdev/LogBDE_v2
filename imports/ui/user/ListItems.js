@@ -11,6 +11,13 @@ export default class ListItems extends TrackerReact(React.Component) {
           searchText: '',
         };   
       }
+      
+      componentWillUnmount(){
+        this.state.itemsSub.stop();
+      }
+      componentDidMount(){
+        this.state.itemsSub = Meteor.subscribe('items')
+      }
 
       handleSearch = (selectedKeys, confirm) => () => {
         confirm();
