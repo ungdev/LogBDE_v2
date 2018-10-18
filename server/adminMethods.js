@@ -49,6 +49,30 @@ Meteor.methods({
             addedBy : this.userId,
         })  
     },
+    duplicateItem(itemId,nombre){
+
+        if(!Roles.userIsInRole(this.userId,'admin'))
+            throw new Meteor.Error('Oups','You are not an admin !')
+        nombre = parseInt(nombre)
+        check(itemId,String)
+        check(nombre,Match.Integer)
+
+        let item = Items.findOne(itemId);
+        if(!item || nombre < 1)
+            throw new Meteor.Error('Oups','l item n existe pas, ou la quantité est incorrect')
+        
+            for(let i =0; i<nombre;i++){
+                Items.insert({
+                    nom:item.nom,
+                    description:item.description,
+                    etat:item.etat,
+                    statut:"disponible", // ['disponible','emprunté','réservé']
+                    caution:item.caution,
+                    addedBy : this.userId,
+                })
+            }
+          
+    },
 
     updateItem(id, nom, description, etat){
         if(!Roles.userIsInRole(this.userId,'admin'))
