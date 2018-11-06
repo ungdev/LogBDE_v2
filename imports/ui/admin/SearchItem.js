@@ -58,14 +58,15 @@ export default class SearchItem extends React.Component {
         this.state.itemsSub = Meteor.subscribe('items')
       }
       
-    handleSearch = (itemId) =>{
+    handleSearch = (value) =>{
         if(value.trim() == '')
             return
-        let item = Items.findOne(itemId)
+        let item = Items.findOne(value)
         if(!item){
             message.error('l objet n existe pas')
             return
         }
+        console.log("aaa");
             this.setState({visible:true,item:item})            
         }
     

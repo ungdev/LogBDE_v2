@@ -76,8 +76,9 @@ Meteor.methods({
                 _id: this.userId,
                 fullName : user.lastName+' '+user.firstName
             },
-            objets: panier.carted.map(item=>{return item.nom}),
+            objets: panier.carted.map(item=>{return {_id:item._id,nom:item.nom}}),
             caution : panier.caution
         })
+        Cart.remove(this.userId)
     }
 })

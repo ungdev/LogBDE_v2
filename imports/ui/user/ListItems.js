@@ -94,7 +94,7 @@ export default class ListItems extends TrackerReact(React.Component) {
               Items.find().count() >= 1
                 ? (
                   <Popconfirm title="êtes vous sûr d'ajouter cet objet a votre panier ?" onConfirm={() => this.handleAddToCart(record.key)}>
-                    <a ><Icon type="plus"  />Ajouté</a>
+                    <a ><Icon type="plus"  />Ajouter</a>
                   </Popconfirm>
                 ) : null
             );

@@ -7,6 +7,7 @@ Meteor.subscribe('userData');
 Meteor.subscribe('items')
 Meteor.subscribe('cart')
 Meteor.subscribe('reservations')
+Meteor.subscribe('emprunts')
 FlowRouter.wait();
 
 Tracker.autorun(() => {

@@ -28,7 +28,13 @@ export default class EmpruntPage extends TrackerReact(Component) {
         this.setState({ searchText: '' });
       }
       handleReservation = (id) =>{
-
+        Meteor.call('createEmprunt',id,(error,result)=>{
+          if(error){
+            message.error(error.reason)
+          }else{
+            message.success('Emprunt créé')
+          }
+        })
       }
 
     render() {
@@ -97,8 +103,13 @@ export default class EmpruntPage extends TrackerReact(Component) {
             dataSource={Reservations.find({}).fetch().map(item =>{
                 return {
                     key:item._id,
-                    etudiant:item.etudiant,
-                    objets:item.objets.toString(),
+                    etudiant:item.etudiant.fullName,
+                    objets:item.objets.map(function(objet, index){
+                        if(index == 0 || index == item.objets.length - 1){
+                          return objet.nom
+                        }else{
+                          return objet.nom+"/ "
+                        }}),
                     caution:item.caution
                 }
             }
