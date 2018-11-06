@@ -1,15 +1,21 @@
 import { Meteor } from 'meteor/meteor'
 import { _ } from 'meteor/underscore'
+import { Items } from '/imports/api/Collections.js'
 
 import '/server/publish.js'
 import '/server/adminMethods.js'
 import '/server/userMethods.js'
 
+import { MockItems} from '/server/dataItems.js'
 //Meteor.users.remove({})
-
+// Items.remove({})
 Meteor.startup(() => {
-  Roles.addUsersToRoles('JGsYbq2LxKHLLzXL2', 'admin');
-  Roles.addUsersToRoles('JGsYbq2LxKHLLzXL2', 'super-admin');
+  Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'admin');
+  Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'super-admin');
+  // MockItems.forEach(element => {
+  //   Items.insert(element)
+  // });
+
 });
 
 
@@ -30,9 +36,9 @@ Accounts.onCreateUser((options, user) => {
   return user;
 });
 
-Meteor.users.deny({
-  update() { return true; },
-  remove() { return true; },
-  insert() { return true; }
-});
+// Meteor.users.deny({
+//   update() { return true; },
+//   remove() { return true; },
+//   insert() { return true; }
+// });
 

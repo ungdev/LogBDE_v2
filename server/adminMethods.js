@@ -1,6 +1,6 @@
 
 
-import { Items } from '/imports/api/Collections.js'
+import { Items, Reservations, Emprunts } from '/imports/api/Collections.js'
 
 Meteor.methods({
     getUsernames(value){
@@ -37,7 +37,7 @@ Meteor.methods({
         check(nom,String)
         check(description, String)
         check(etat, String)
-        if(!(!isNaN(parseFloat(caution)) && isFinite(caution) && caution > 0))
+        if(!(!isNaN(caution = parseFloat(caution)) && isFinite(caution) && caution > 0))
             throw new Meteor.Error('Oups','le prix de la caution n est pas correct')
 
         Items.insert({
@@ -45,8 +45,7 @@ Meteor.methods({
             description,
             etat,
             statut:"disponible", // ['disponible','emprunté','réservé']
-            caution,
-            addedBy : this.userId,
+            caution
         })  
     },
     duplicateItem(itemId,nombre){
@@ -67,8 +66,7 @@ Meteor.methods({
                     description:item.description,
                     etat:item.etat,
                     statut:"disponible", // ['disponible','emprunté','réservé']
-                    caution:item.caution,
-                    addedBy : this.userId,
+                    caution:item.caution
                 })
             }
           
@@ -108,9 +106,32 @@ Meteor.methods({
         check(id,String)
         let item = Items.findOne(id)
 
-        if(!item || item.statut === 'emprunté' || item.statut === 'réservé' || item.addedBy !== this.userId)
+        if(!item || item.statut === 'emprunté' || item.statut === 'réservé')
             throw new Meteor.Error('Oups','en l etat cet objet n est pas supprimable')
             
         Items.remove(id)
+    },
+
+    createEmprunt(id){
+        if(!Roles.userIsInRole(this.userId,'admin'))
+            throw new Meteor.Error('Oups','You are not an admin !')
+
+        check(id,String)
+        let reservation = Reservations.findOne(id)
+        reservation.objets.forEach(item =>{
+            Items.update(item._id, {
+                $set:{
+                    statut : "emprunté"
+                },
+                $push : {
+                    emprunts : {
+                        etudiant : reservation.etudiant,
+                        date : new Date()
+                    }
+                }
+            })
+        })
+        Emprunts.insert(reservation)
+        Reservations.remove(id)
     },
 })
