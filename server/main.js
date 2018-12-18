@@ -1,44 +1,38 @@
 import { Meteor } from 'meteor/meteor'
 import { _ } from 'meteor/underscore'
 import { Items } from '/imports/api/Collections.js'
+import { Random } from 'meteor/random'
 
 import '/server/publish.js'
 import '/server/adminMethods.js'
 import '/server/userMethods.js'
 
-import { MockItems} from '/server/dataItems.js'
-//Meteor.users.remove({})
-// Items.remove({})
-Meteor.startup(() => {
-  Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'admin');
-  Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'super-admin');
-  // MockItems.forEach(element => {
-  //   Items.insert(element)
-  // });
+import { MockItems} from '/server/MOCK_DATA.js'
 
+Meteor.startup(() => {
+  if(Items.find().count() === 0){
+    MockItems.forEach(element => {
+      Items.insert(element)
+    });
+  }
+  //Roles.addUsersToRoles(user._id, 'admin'); 
 });
 
 
 
 Accounts.onCreateUser((options, user) => {
-  // console.log("user : "+JSON.stringify(user));
+  console.log("user : "+JSON.stringify(user));
   // console.log("options : "+JSON.stringify(options));
   if (!user.services.utt) {
     throw new Error('Expected login with UTT oAuth only.');
   }
 
-  if(!options.bdeMember)
-    throw new Error('not BDE member')
-  
+  user._id = user.services.utt.id
+
   _.extend(user, options)
 
 
   return user;
 });
 
-// Meteor.users.deny({
-//   update() { return true; },
-//   remove() { return true; },
-//   insert() { return true; }
-// });
 

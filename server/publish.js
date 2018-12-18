@@ -6,6 +6,8 @@ Meteor.publish('userData',function(){
 })
 
 Meteor.publish('items', function(){
+  if(!Meteor.userId())
+    return 
   return Items.find({})
 })
 

@@ -14,11 +14,10 @@ import { MainLayout } from '/imports/MainLayout.js'
 
 
 FlowRouter.triggers.enter([function(context, redirect) {
-    console.log("check user");
     if(!Meteor.userId())
         redirect('/');
 
-  }], {except: ["home"]});
+  }], {except: ["home"]}); // check si l'utilisateur est log-in expect sur /
 
 
 var adminRoutes = FlowRouter.group({
@@ -30,6 +29,7 @@ var adminRoutes = FlowRouter.group({
     }]
   });
   
+
   adminRoutes.route('/retour', {
     name: 'retour',
     action() {

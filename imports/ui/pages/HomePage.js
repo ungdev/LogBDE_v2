@@ -5,8 +5,7 @@ import { DatePicker } from 'antd';
 export default class HomePage extends Component {
     render(){
         return(
-            <DatePicker />
-            
+            <h1>Accueil</h1>     
         )
     }
 }
