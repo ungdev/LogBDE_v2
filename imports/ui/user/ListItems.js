@@ -42,8 +42,8 @@ export default class ListItems extends TrackerReact(React.Component) {
       render() {
         const allItems = [{
           title: 'Nom',
-          dataIndex: 'nom',
-          key: 'nom',
+          dataIndex: 'name',
+          key: 'name',
           filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div className="custom-filter-dropdown">
               <Input
@@ -78,26 +78,30 @@ export default class ListItems extends TrackerReact(React.Component) {
             ) : text;
           },
         },{
-          title: 'Caution',
-          dataIndex: 'caution',
-          key: 'caution',
-        }, {
+          title: 'Caution/Prix',
+          dataIndex: 'price',
+          key: 'price',
+        },
+        {
+          title: 'Quantite(s)',
+          dataIndex: 'quantity',
+          key: 'quantity',
+        },
+         {
           title: 'Description',
           dataIndex: 'description',
           key: 'description',
-          //width:150
         },{
           title: 'Operation',
           dataIndex: 'operation',
           render: (text, record) => {
-            return (
-              Items.find().count() >= 1
-                ? (
-                  <Popconfirm title="êtes vous sûr d'ajouter cet objet a votre panier ?" onConfirm={() => this.handleAddToCart(record.key)}>
-                    <a ><Icon type="plus"  />Ajouter</a>
-                  </Popconfirm>
-                ) : null
-            );
+            if(!record)
+              return null
+
+            
+              return (<Popconfirm title="êtes vous sûr d'ajouter cet objet a votre panier ?" onConfirm={() => this.handleAddToCart(record.key)}>
+              <a ><Icon type="plus"  />Ajouter</a>
+            </Popconfirm>)
           },
         }]; // ALL ITEMS
   
@@ -105,7 +109,10 @@ export default class ListItems extends TrackerReact(React.Component) {
           <Table 
           pagination = {{pageSize:5, pageSizeOptions: ['5', '10','50'], showSizeChanger: true, showTotal:(total, range) => `${range[0]}-${range[1]} des ${total} objets`}} 
           columns={allItems} 
-          dataSource={Items.find({statut:'disponible'}).fetch().map(item =>{return {key:item._id,caution:item.caution,nom:item.nom,description:item.description}})} />
+          dataSource={Items.find().fetch().map(item =>{
+            return {key:item._id,isConsumable:item.isConsumable,name:item.name,quantity:item.quantity?item.quantity:1,description:item.description,price:item.isConsumable ? item.price:item.suretyBond}
+            
+            })} />
           );
       }
 }

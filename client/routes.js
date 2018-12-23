@@ -2,13 +2,15 @@ import React from 'react'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { mount } from 'react-mounter'
 
-import EmpruntPage from '/imports/ui/pages/EmpruntPage.js'
-import GestionPage from '/imports/ui/pages/GestionPage.js'
-import OverviewPage from '/imports/ui/pages/OverviewPage.js'
-import ReservationPage from '/imports/ui/pages/ReservationPage.js'
-import RetourPage from '/imports/ui/pages/RetourPage.js'
 import HomePage from '/imports/ui/pages/HomePage.js'
-import { AddAdmin } from '/imports/ui/superAdmin/AddAdmin.js'
+import OverviewPage from '/imports/ui/pages/OverviewPage.js'          // for user
+import ReservationPage from '/imports/ui/pages/ReservationPage.js'    // for user
+
+import EmpruntPage from '/imports/ui/pages/EmpruntPage.js'            // for admin
+import RetourPage from '/imports/ui/pages/RetourPage.js'
+import GestionPage from '/imports/ui/pages/GestionPage.js'
+// import { AddAdmin } from '/imports/ui/superAdmin/AddAdmin.js'
+
 
 import { MainLayout } from '/imports/MainLayout.js'
 
@@ -17,13 +19,12 @@ FlowRouter.triggers.enter([function(context, redirect) {
     if(!Meteor.userId())
         redirect('/');
 
-  }], {except: ["home"]}); // check si l'utilisateur est log-in expect sur /
+  }], {except: ["/"]}); // check si l'utilisateur est log-in except sur /
 
 
 var adminRoutes = FlowRouter.group({
     name: 'admin',
     triggersEnter: [function(context, redirect) { 
-      console.log("check admin")
       if(!Roles.userIsInRole(Meteor.userId(),['admin']))
         redirect('/overview')
     }]
@@ -56,22 +57,22 @@ var adminRoutes = FlowRouter.group({
 
   //////////////
 
-FlowRouter.route('/addadmin',{
-  name: 'addadmin',
-    triggersEnter: [function(context, redirect) {
-      console.log("check super-admin");
-      if(!Roles.userIsInRole(Meteor.userId(),'super-admin'))
-        redirect('/gestion')
-    }],
-    action(){
-      mount( MainLayout, {
-        content: <AddAdmin />
-      })
-    }
-})
+// FlowRouter.route('/addadmin',{
+//   name: 'addadmin',
+//     triggersEnter: [function(context, redirect) {
+//       console.log("check super-admin");
+//       if(!Roles.userIsInRole(Meteor.userId(),'super-admin'))
+//         redirect('/gestion')
+//     }],
+//     action(){
+//       mount( MainLayout, {
+//         content: <AddAdmin />
+//       })
+//     }
+// })
 
 FlowRouter.route('/', {
-    name: 'home',
+    name: '/',
     triggersEnter: [function(context, redirect) { 
       if(Meteor.userId())
         redirect('/overview')

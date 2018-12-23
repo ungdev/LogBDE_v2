@@ -27,8 +27,6 @@ Accounts.onCreateUser((options, user) => {
     throw new Error('Expected login with UTT oAuth only.');
   }
 
-  user._id = user.services.utt.id
-
   _.extend(user, options)
 
 

@@ -35,13 +35,7 @@ export default class Nav extends TrackerReact(Component) {
       this.setState({
         current: e.key,
       });
-  }
-  renderSuperAdmin = () =>{
-    if(!Roles.userIsInRole(Meteor.userId(),'super-admin'))
-      return
-    else return(<Menu.Item key="setting:4"><a href="/addadmin" ><Icon type="plus" />Ajouter un Admin</a></Menu.Item>)
-  }
-  
+  } 
 
   renderAdminMenu(){
     if(!Roles.userIsInRole(Meteor.userId(),'admin'))
@@ -55,11 +49,10 @@ export default class Nav extends TrackerReact(Component) {
           </MenuItemGroup>
           <Menu.Divider title="----"/>
             <Menu.Item key="setting:3"><a href="/gestion" ><Icon type="dashboard" />Gestion / Inventaire</a></Menu.Item>
-            {this.renderSuperAdmin()}
         </SubMenu>  
     )
   }
-  // bon ca c'est un hack, avec jsx faut mettre un div pour englober plusieurs element mais antd n'aime pas.
+
   renderOverview(){
     if(!Meteor.userId())
       return(<Menu.Item disabled>Please Sign-in</Menu.Item>)
@@ -69,14 +62,13 @@ export default class Nav extends TrackerReact(Component) {
           </Menu.Item>)
     
   }
-  // bon ca c'est un hack, avec jsx faut mettre un div pour englober plusieurs element mais antd n'aime pas.
+
   renderReservation(){
     if(!Meteor.userId())
-    return
-
+      return
   return(<Menu.Item key="reservation">
-             
-            <a href="/reservation" ><Icon type="form" /><Badge count={Cart.find(Meteor.userId()).fetch()[0] ? Cart.find(Meteor.userId()).fetch()[0].carted.length:0} >Reservation</Badge></a>
+              <a href="/reservation" ><Icon type="form" />Reservation</a>
+            {/* <a href="/reservation" ><Icon type="form" /><Badge count={Cart.find(Meteor.userId()).fetch()[0] ? Cart.find(Meteor.userId()).fetch()[0].carted.length:0} >Reservation</Badge></a> */}
           
         </Menu.Item>)
   }

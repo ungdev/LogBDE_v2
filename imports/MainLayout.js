@@ -12,7 +12,7 @@ export const MainLayout = ({content}) =>(
 
     <Header>
       <div className="logo" />
-        <Nav />
+      <Nav />
     </Header>
 
     <Content style={{ padding: '0 50px' }}>

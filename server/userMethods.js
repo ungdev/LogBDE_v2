@@ -10,15 +10,8 @@ Meteor.methods({
             throw new Meteor.Error('Oups','You are not logged in')
         
         let item = Items.findOne(itemId)
-        if(!item || item.statut !== 'disponible')
+        if(!item)
             throw new Meteor.Error('Oups','Cet Objet n est pas dispo !')
-
-        Items.update(itemId,{
-            $set:{
-                statut:'réservé',
-                etudiant:this.userId
-            }
-        })
 
         Cart.update(this.userId, {
             $set:{
@@ -27,13 +20,9 @@ Meteor.methods({
             },
             $push:{
                 carted: {
-                    _id:itemId,
-                    nom:item.nom,
-                    caution:item.caution
+                    _id:item._id,
+                    nom:item.name,
                 }      
-            },
-            $inc:{
-                caution:item.caution
             }
         },{upsert: true})
     },
@@ -41,16 +30,10 @@ Meteor.methods({
         if(!this.userId)
             throw new Meteor.Error('Oups','You are not logged in')
         
-        let item = Items.findOne(itemId)
-        if(!item || item.etudiant !== this.userId)
+        let item = Cart.findOne(this.userId)
+        if(!item)
             throw new Meteor.Error('Oups','l objet n existe pas ou vous ne l avez pas réservé')
 
-            Items.update(itemId,{
-                $set:{
-                    statut:'disponible',
-                    etudiant:null
-                }
-            })
             Cart.update(this.userId, {
                 $set:{
                     lastModified : new Date(),
@@ -58,9 +41,6 @@ Meteor.methods({
                 },
                 $pull:{
                     carted: {_id:itemId }                
-                },
-                $inc:{
-                    caution:-item.caution
                 }
             })
         
