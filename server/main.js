@@ -12,6 +12,8 @@ import { MockItems} from '/server/dataItems.js'
 Meteor.startup(() => {
   Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'admin');
   Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'super-admin');
+  Roles.addUsersToRoles('JGwZdb53u73s8KDx8', 'admin');
+  Roles.addUsersToRoles('JGwZdb53u73s8KDx8', 'super-admin');
   // MockItems.forEach(element => {
   //   Items.insert(element)
   // });
