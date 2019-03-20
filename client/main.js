@@ -1,9 +1,10 @@
 
 
 import '/client/routes.js'
-import '/imports/api/Collections.js'
+import '/client/main.css'
 
 Meteor.subscribe('userData')
+
 
 FlowRouter.wait();
 
