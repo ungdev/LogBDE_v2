@@ -22,8 +22,16 @@ class FormAddAdmin extends Component {
         this.props.form.validateFields((err, values) => {
           if (!err) {
             console.log('Received values of form: ', values);
-          }
-        });
+            Meteor.call('addAdmins', JSON.stringify(values), (error,result)=>{
+                if(error){
+                    message.error('error')
+                  }else{
+                    message.success('admins ajoute');
+                  }              
+                })
+            }
+          })
+        
     }
     getGroups(){
         let res = Meteor.users.find({ 'roles': {$ne:null}}).fetch()
@@ -62,7 +70,7 @@ class FormAddAdmin extends Component {
                         )}
                         <Form.Item label="Asso" hasFeedback>
                         {getFieldDecorator('asso', {rules: [{ required: true, message: 'Choisissez une asso' }],})(
-                            <Select placeholder="Choisissez une asso">
+                            <Select placeholder="Choisissez une asso" mode="tags" tokenSeparators={[' ']}>
                             {this.getGroups()}
                             </Select>
                         )}

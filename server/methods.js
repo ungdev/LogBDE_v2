@@ -206,4 +206,19 @@ Meteor.methods({
         },
         {multi:true})
     },
+    addAdmins(args){
+        if(!this.userId)
+            throw new Meteor.Error('Oups','You are not logged in')
+
+        if(!Roles.userIsInRole(this.userId,'admin','bde'))
+            throw new Meteor.Error('Oups','You are not ADMIN in bde')
+
+        args = JSON.parse(args)
+
+        for(userId of args.admins){
+            for(role of args.asso){
+                Roles.addUsersToRoles(userId, ['admin'],role);
+            }
+        }
+    }
 })
