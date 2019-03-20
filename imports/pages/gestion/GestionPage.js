@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Table,message, Badge, Menu, Dropdown, Icon,Button,Popconfirm} from 'antd';
 import { Items } from '/imports/collections/Collections.js'
 import CreeItem from '/imports/pages/gestion/CreeItem.js'
+import AddAdmin from '/imports/pages/gestion/AddAdmin.js'
 
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
 
@@ -38,6 +39,9 @@ export default class GestionPage extends TrackerReact(Component) {
                       visible: false,
                    });
   }
+  handleSubmit(){
+
+  }
 
   handleCreate = () => {
       const form = this.formRef.props.form;
@@ -57,10 +61,14 @@ export default class GestionPage extends TrackerReact(Component) {
         this.setState({ visible: false });
       });
   }
-  
+  AddAdmin(){
+    if(Roles.userIsInRole(Meteor.userId(),'admin','bde'))
+      return <AddAdmin/>
+    return null
+  }
   saveFormRef = (formRef) => {
     this.formRef = formRef;
-}
+    }
     componentWillUnmount(){
         this.state.itemsSub.stop();
     }
@@ -102,6 +110,7 @@ export default class GestionPage extends TrackerReact(Component) {
         return (
           <>
           <Button type="primary" onClick={this.showModal}>Cree Item</Button>
+          {this.AddAdmin()}
           <CreeItem
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

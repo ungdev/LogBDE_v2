@@ -15,11 +15,6 @@ export default class Nav extends TrackerReact(Component) {
       current: null,
     }
   }
-
-  componentWillUnmount(){
-  }
-  componentDidMount(){
-  }
   
 
   handleClick = (e) => {
@@ -34,11 +29,6 @@ export default class Nav extends TrackerReact(Component) {
       });
   } 
 
-  renderUsersMenu(){
-    if(Roles.userIsInRole(Meteor.userId(),'admin','bde'))
-      return <Menu.Item key="setting:4"><a href="/users" ><Icon type="user" />Users</a></Menu.Item>
-    return null
-  }
 
   renderAdminMenu(){
    
@@ -52,7 +42,6 @@ export default class Nav extends TrackerReact(Component) {
               </MenuItemGroup>
               <Menu.Divider title="----"/>
                 <Menu.Item key="setting:3"><a href="/gestion-inventaire" ><Icon type="dashboard" />Gestion / Inventaire</a></Menu.Item>
-                {this.renderUsersMenu()} 
             </SubMenu>  
         )
   }

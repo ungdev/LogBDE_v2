@@ -62,6 +62,7 @@ FlowRouter.route('/', {
     }
 })
 
+
 FlowRouter.route('/users/:id', {
   name: '/',
   triggersEnter: [function(context, redirect) { 

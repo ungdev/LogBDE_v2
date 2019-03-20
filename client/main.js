@@ -4,7 +4,7 @@ import '/client/routes.js'
 import '/client/main.css'
 
 Meteor.subscribe('userData')
-
+Meteor.subscribe('roles')
 
 FlowRouter.wait();
 

@@ -164,7 +164,7 @@ Meteor.methods({
         reservation._idLogeur = this.userId
         reservation.description = description
         reservation.location = location
-        reservation.suretyBondTaken = parseFloat(caution)
+        reservation.suretyBondTaken = caution ? parseFloat(caution) :0
         
 
              Items.update(idItem,
