@@ -8,10 +8,12 @@
     "@babel/runtime": "^7.1.5",
     "antd": "^3.12.3",
     "antd-meteor": "0.0.3",
+    "extend": "^3.0.2",
     "indexof": "0.0.1",
     "meteor-node-stubs": "^0.4.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "react-mounter": "^1.2.0"
+    "react-mounter": "^1.2.0",
+    "superagent": "^4.1.0"
   }
 }
