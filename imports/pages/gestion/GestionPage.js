@@ -51,7 +51,7 @@ export default class GestionPage extends TrackerReact(Component) {
         }
   
         console.log('Received values of form: ', values);
-        Meteor.call('createItem',values.name,values.description,values.location,values.suretyBond,(error)=>{
+        Meteor.call('createItem',values.name,values.description,values.location,values.suretyBond,values.asso,(error)=>{
           if(error){
             return;
           }

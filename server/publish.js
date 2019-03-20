@@ -10,8 +10,7 @@ Meteor.publish('items', function(){
 Meteor.publish('userData',function(){
   if(!this.userId)
       return
-  if(Roles.userIsInRole(this.userId,'admin','bde'))
-      return Meteor.users.find({},{fields: { _id: 1,firstName:1,lastName:1, reservations:1 }})
+return Meteor.users.find({},{fields: { _id: 1,firstName:1,lastName:1, reservations:1 }})
 })
 
 Meteor.publish('roles',function(){

@@ -114,7 +114,7 @@ Meteor.methods({
         })
     },
 
-    createItem(name,description,location,suretyBond){
+    createItem(name,description,location,suretyBond,asso){
         if(!this.userId)
             throw new Meteor.Error('Oups','You are not logged in')
         
@@ -127,6 +127,7 @@ Meteor.methods({
         suretyBond = parseFloat(suretyBond);
 
         Items.insert({
+            asso,
             name,
             description,
             location,
@@ -197,9 +198,10 @@ Meteor.methods({
 
          if(!item)
             throw new Meteor.Error('Oups','Objet inconnu')
-        
-        Items.remove(idItem);
 
+
+        Items.remove(idItem);
+        
         Meteor.users.update({},
         {
             $pull:{reservations:{ _idItem: idItem,status:"reserve"}}

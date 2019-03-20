@@ -117,7 +117,8 @@ export default class RetourPage extends TrackerReact(Component) {
             { title: 'Action', key: 'operation', render: (record) => <Popconfirm title="Valider le retour ?" onConfirm={() => this.showModal(record._idItem,record.endDate)} onCancel={this.cancel} okText="Oui" cancelText="Non">
             <Button>Valider Retour</Button>
           </Popconfirm> }];
-          const items = Items.find({}).fetch().map(item => { item.key = item._id ;return item})
+          let groups = Roles.getGroupsForUser(Meteor.userId(),'admin')
+          const items = Items.find({ asso: { $in: groups } }).fetch().map(item => { item.key = item._id ;return item})
           let reservations = []
           let key = 0
           for(const item of items){

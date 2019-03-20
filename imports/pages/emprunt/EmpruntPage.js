@@ -95,7 +95,8 @@ export default class EmpruntPage extends TrackerReact(Component) {
             <Button>Valider Emprunt</Button>
           </Popconfirm> },
           ];
-          const items = Items.find({}).fetch().map(item => { item.key = item._id ;return item})
+          let groups = Roles.getGroupsForUser(Meteor.userId(),'admin')
+          const items = Items.find({ asso: { $in: groups } }).fetch().map(item => { item.key = item._id ;return item})
           let reservations = []
           let key = 0
           for(const item of items){
