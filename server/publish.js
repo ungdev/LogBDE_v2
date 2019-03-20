@@ -3,7 +3,7 @@ import { Items } from '/imports/collections/Collections.js'
 
 Meteor.publish('items', function(){
     if(!this.userId)
-      return 
+      return
     return Items.find({})
 })
 

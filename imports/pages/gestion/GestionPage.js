@@ -106,7 +106,8 @@ export default class GestionPage extends TrackerReact(Component) {
       </Popconfirm>
        },
       ];
-      let data = Items.find({}).fetch().map(el=>{el.key = el._id;return el})
+      let groups = Roles.getGroupsForUser(Meteor.userId(),'admin')
+      let data = Items.find({ asso: { $in: groups } }).fetch().map(el=>{el.key = el._id;return el})
         return (
           <>
           <Button type="primary" onClick={this.showModal}>Cree Item</Button>

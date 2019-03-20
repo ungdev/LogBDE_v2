@@ -38,6 +38,15 @@ export default  CreeItem  = Form.create({ name: 'form_in_modal' })(
                 <Input />
               )}
             </Form.Item>
+            <Form.Item label="Pour quelle asso ?">
+              {getFieldDecorator('asso', {
+                rules: [{ required: true, message: 'Please input the title of collection!' }],
+              })(
+                <Select >
+                 {Roles.getGroupsForUser(Meteor.userId(),'admin').map(group =>(<Option key={group}>{group}</Option>))}
+                </Select>
+              )}
+            </Form.Item>
             <Form.Item label="Description">
               {getFieldDecorator('description', {
                 rules: [{ required: true, message: 'description' }],
