@@ -1,10 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { _ } from 'meteor/underscore'
-
 import '/server/publish.js'
-
-
-
 import { Items } from '/imports/collections/Collections.js'
 import { MockItems} from '/server/LogBDE.js'
 
