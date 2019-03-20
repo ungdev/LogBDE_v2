@@ -1,46 +1,47 @@
 import { Meteor } from 'meteor/meteor'
 import { _ } from 'meteor/underscore'
-import { Items } from '/imports/api/Collections.js'
-
 import '/server/publish.js'
-import '/server/adminMethods.js'
-import '/server/userMethods.js'
+import { Items } from '/imports/collections/Collections.js'
+import { MockItems} from '/server/LogBDE.js'
 
-import { MockItems} from '/server/dataItems.js'
-//Meteor.users.remove({})
-// Items.remove({})
+
 Meteor.startup(() => {
-  Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'admin');
-  Roles.addUsersToRoles('prhxZP4TeCT3mY8ry', 'super-admin');
-  Roles.addUsersToRoles('JGwZdb53u73s8KDx8', 'admin');
-  Roles.addUsersToRoles('JGwZdb53u73s8KDx8', 'super-admin');
-  // MockItems.forEach(element => {
-  //   Items.insert(element)
-  // });
-
+    if(Items.find().count() === 0){
+      MockItems.forEach(element => {
+        if(!element.isConsumable)
+          Items.insert(element)
+      });
+    }
 });
-
 
 
 Accounts.onCreateUser((options, user) => {
-  // console.log("user : "+JSON.stringify(user));
-  // console.log("options : "+JSON.stringify(options));
-  if (!user.services.utt) {
-    throw new Error('Expected login with UTT oAuth only.');
-  }
-
-  if(!options.bdeMember)
-    throw new Error('not BDE member')
+    console.log("user : ",user);
+    // console.log("options : "+JSON.stringify(options));
+    if (!user.services.utt) {
+      throw new Error('Expected login with UTT oAuth only.');
+    }
+    if(user.services.utt.id == 44142){
+      var userId = user._id = Random.id();
+      var handle = Meteor.users.find({_id: userId}, {fields: {_id: 1}}).observe({
+          added: function () {
+              Roles.addUsersToRoles(userId, ['admin'],'bde');
+              handle.stop();
+              handle = null;
+          }
+      });
   
-  _.extend(user, options)
+      // In case the document is never inserted
+      Meteor.setTimeout(function() {
+          if (handle) {
+              handle.stop();
+          }
+      }, 30000);
+    }
+    
 
+    _.extend(user, options)
 
-  return user;
-});
-
-// Meteor.users.deny({
-//   update() { return true; },
-//   remove() { return true; },
-//   insert() { return true; }
-// });
-
+    return user;
+  
+  });

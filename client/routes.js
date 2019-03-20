@@ -2,43 +2,34 @@ import React from 'react'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { mount } from 'react-mounter'
 
-import EmpruntPage from '/imports/ui/pages/EmpruntPage.js'
-import GestionPage from '/imports/ui/pages/GestionPage.js'
-import OverviewPage from '/imports/ui/pages/OverviewPage.js'
-import ReservationPage from '/imports/ui/pages/ReservationPage.js'
-import RetourPage from '/imports/ui/pages/RetourPage.js'
-import HomePage from '/imports/ui/pages/HomePage.js'
-import { AddAdmin } from '/imports/ui/superAdmin/AddAdmin.js'
+import HomePage from '/imports/pages/HomePage.js'
+import NewPage from '/imports/pages/newPage/NewPage.js'
 
+import GestionPage from '/imports/pages/gestion/GestionPage.js'
+import EmpruntPage from '/imports/pages/emprunt/EmpruntPage.js'
+
+import RetourPage from '/imports/pages/retour/RetourPage.js'
+
+import NotFoundPage from '/imports/pages/NotFoundPage.js'
 import { MainLayout } from '/imports/MainLayout.js'
 
 
 FlowRouter.triggers.enter([function(context, redirect) {
-    console.log("check user");
     if(!Meteor.userId())
         redirect('/');
 
-  }], {except: ["home"]});
+  }], {except: ["/"]}); // check si l'utilisateur est log-in except sur /
 
 
 var adminRoutes = FlowRouter.group({
     name: 'admin',
     triggersEnter: [function(context, redirect) { 
-      console.log("check admin")
-      if(!Roles.userIsInRole(Meteor.userId(),['admin']))
-        redirect('/overview')
+      if(Roles.getGroupsForUser(Meteor.userId(),'admin').length == 0)
+        redirect('/')
     }]
   });
-  
-  adminRoutes.route('/retour', {
-    name: 'retour',
-    action() {
-        mount( MainLayout, {
-            content: <RetourPage />
-        })}
-  });
 
-  adminRoutes.route('/gestion', {
+  adminRoutes.route('/gestion-inventaire', {
     name: 'gestion',
     action() {
         mount( MainLayout, {
@@ -46,36 +37,24 @@ var adminRoutes = FlowRouter.group({
         })}
   });
 
-  adminRoutes.route('/emprunt', {
-    name: 'emprunt',
+  adminRoutes.route('/gestion-emprunt', {
+    name: 'gestion',
     action() {
         mount( MainLayout, {
             content: <EmpruntPage />
         })}
   });
 
-  //////////////
-
-FlowRouter.route('/addadmin',{
-  name: 'addadmin',
-    triggersEnter: [function(context, redirect) {
-      console.log("check super-admin");
-      if(!Roles.userIsInRole(Meteor.userId(),'super-admin'))
-        redirect('/gestion')
-    }],
-    action(){
-      mount( MainLayout, {
-        content: <AddAdmin />
-      })
-    }
-})
+  adminRoutes.route('/gestion-retour', {
+    name: 'gestion',
+    action() {
+        mount( MainLayout, {
+            content: <RetourPage />
+        })}
+  });
 
 FlowRouter.route('/', {
-    name: 'home',
-    triggersEnter: [function(context, redirect) { 
-      if(Meteor.userId())
-        redirect('/overview')
-    }],
+    name: '/',
     action(){
       mount( MainLayout, {
         content: <HomePage />
@@ -83,25 +62,33 @@ FlowRouter.route('/', {
     }
 })
 
-FlowRouter.route('/overview', {
-    name: 'overview',
+FlowRouter.route('/users/:id', {
+  name: '/',
+  triggersEnter: [function(context, redirect) { 
+    if(Roles.getGroupsForUser(Meteor.userId(),'admin').length == 0)
+        redirect('/')
+
+    if(context.params.id){
+      let user = Meteor.users.findOne(context.params.id);
+      if(user)
+        window.location = 'https://etu.utt.fr/user/'+user.username
+    }
+  }],
+  action(){
+    mount( MainLayout, {
+      content: <NotFoundPage />
+    })
+  }
+})
+
+FlowRouter.route('/new', {
+    name: 'new',
     action(){
       mount( MainLayout, {
-        content: <OverviewPage />
+        content: <NewPage />
       })
     }
 })
-
-
-FlowRouter.route('/reservation', {
-    name: 'reservation',
-    action(){
-      mount( MainLayout, {
-        content: <ReservationPage />
-      })
-    }
-})
-
 
 FlowRouter.notFound = {
     name: 'notFound',

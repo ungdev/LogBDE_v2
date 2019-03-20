@@ -1,9 +1,8 @@
-import AccountsUI from '/imports/ui/AccountsUI.js';
+import AccountsUI from '/imports/AccountsUI.js';
 import React, { Component } from 'react';
-import { Menu, Icon,Badge } from 'antd';
-import { Cart } from '/imports/api/Collections.js'
+import { Menu, Icon} from 'antd';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import '/client/main.css'
+
 
 
 const SubMenu = Menu.SubMenu;
@@ -18,10 +17,8 @@ export default class Nav extends TrackerReact(Component) {
   }
 
   componentWillUnmount(){
-    this.state.cartSub.stop();
   }
   componentDidMount(){
-    this.state.cartSub = Meteor.subscribe('cart')
   }
   
 
@@ -35,49 +32,46 @@ export default class Nav extends TrackerReact(Component) {
       this.setState({
         current: e.key,
       });
+  } 
+
+  renderUsersMenu(){
+    if(Roles.userIsInRole(Meteor.userId(),'admin','bde'))
+      return <Menu.Item key="setting:4"><a href="/users" ><Icon type="user" />Users</a></Menu.Item>
+    return null
   }
-  renderSuperAdmin = () =>{
-    if(!Roles.userIsInRole(Meteor.userId(),'super-admin'))
-      return
-    else return(<Menu.Item key="setting:4"><a href="/addadmin" ><Icon type="plus" />Ajouter un Admin</a></Menu.Item>)
-  }
-  
 
   renderAdminMenu(){
-    if(!Roles.userIsInRole(Meteor.userId(),'admin'))
-      return
-
+   
+    if(Roles.getGroupsForUser(Meteor.userId(),'admin').length == 0)
+      return null
     return(
-        <SubMenu title={<span className="submenu-title-wrapper"><Icon type="setting" />Admin</span>}>
-          <MenuItemGroup title="Actions">
-            <Menu.Item key="setting:1"><a href="/retour" ><Icon type="rollback" />Retour</a></Menu.Item>
-            <Menu.Item key="setting:2"><a href="/emprunt" ><Icon type="edit" />Emprunt</a></Menu.Item>
-          </MenuItemGroup>
-          <Menu.Divider title="----"/>
-            <Menu.Item key="setting:3"><a href="/gestion" ><Icon type="dashboard" />Gestion / Inventaire</a></Menu.Item>
-            {this.renderSuperAdmin()}
-        </SubMenu>  
-    )
+            <SubMenu title={<span className="submenu-title-wrapper"><Icon type="setting" />Admin</span>}>
+              <MenuItemGroup title="Actions">
+                <Menu.Item key="setting:1"><a href="/gestion-retour" ><Icon type="rollback" />Retour</a></Menu.Item>
+                <Menu.Item key="setting:2"><a href="/gestion-emprunt" ><Icon type="edit" />Emprunt</a></Menu.Item>
+              </MenuItemGroup>
+              <Menu.Divider title="----"/>
+                <Menu.Item key="setting:3"><a href="/gestion-inventaire" ><Icon type="dashboard" />Gestion / Inventaire</a></Menu.Item>
+                {this.renderUsersMenu()} 
+            </SubMenu>  
+        )
   }
-  // bon ca c'est un hack, avec jsx faut mettre un div pour englober plusieurs element mais antd n'aime pas.
-  renderOverview(){
+
+  renderHomePage(){
     if(!Meteor.userId())
       return(<Menu.Item disabled>Please Sign-in</Menu.Item>)
 
-    return(<Menu.Item key="overview">
-            <a href="/overview" ><Icon type="eye" />Overview</a>
+    return(<Menu.Item key="homepage">
+            <a href="/" ><Icon type="eye" />Mes Emprunts et Reservations</a>
           </Menu.Item>)
     
   }
-  // bon ca c'est un hack, avec jsx faut mettre un div pour englober plusieurs element mais antd n'aime pas.
-  renderReservation(){
-    if(!Meteor.userId())
-    return
 
-  return(<Menu.Item key="reservation">
-             
-            <a href="/reservation" ><Icon type="form" /><Badge count={Cart.find(Meteor.userId()).fetch()[0] ? Cart.find(Meteor.userId()).fetch()[0].carted.length:0} >Reservation</Badge></a>
-          
+  renderNew(){
+    if(!Meteor.userId())
+      return null
+  return(<Menu.Item key="new">
+              <a href="/new" ><Icon type="form" />Nouvelle demande</a>
         </Menu.Item>)
   }
 
@@ -92,9 +86,9 @@ export default class Nav extends TrackerReact(Component) {
         mode="horizontal"
         style={{ lineHeight: '64px' }}
       >
-        {this.renderOverview()}
+        {this.renderHomePage()}
         
-        {this.renderReservation()}
+        {this.renderNew()}
         
         {this.renderAdminMenu()}
 
