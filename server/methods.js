@@ -237,5 +237,19 @@ Meteor.methods({
                 Roles.addUsersToRoles(userId, ['admin'],role);
             }
         }
+    },
+
+    seeProfil(idEtudiant){
+        if(!this.userId)
+            throw new Meteor.Error('Oups','You are not logged in')
+        
+        if(Roles.getGroupsForUser(this.userId,'admin').length == 0)
+            throw new Meteor.Error('Oups','You are not ADMIN')
+
+        check(idEtudiant,String)
+
+        let user = Meteor.users.findOne(idEtudiant)
+
+        return user.username
     }
 })

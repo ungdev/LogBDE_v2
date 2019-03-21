@@ -70,9 +70,11 @@ FlowRouter.route('/users/:id', {
         redirect('/')
 
     if(context.params.id){
-      let user = Meteor.users.findOne(context.params.id);
-      if(user)
-        window.location = 'https://etu.utt.fr/user/'+user.username
+      Meteor.call('seeProfil',context.params.id,(error,result)=>{
+        if(error)
+          return;
+        window.location = 'https://etu.utt.fr/user/'+result
+      })      
     }
   }],
   action(){
