@@ -63,7 +63,7 @@ Meteor.methods({
 
         let userId = this.userId;
 
-        if(Roles.userIsInRole('admin',item.asso)){
+        if(Roles.userIsInRole(this.userId,'admin',item.asso)){
             userId = idEtudiant
         }
 
@@ -71,6 +71,9 @@ Meteor.methods({
             if(el._idEtudiant == userId && el.startDate == startDate)
                 return el;
         })
+        if(!reservation)
+            throw new Meteor.Error('Oups','Reservation inconnu')
+
         if(reservation.isValide)
             throw new Meteor.Error('Oups','tu fais quoi frere ?')
         
