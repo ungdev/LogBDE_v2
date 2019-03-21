@@ -77,11 +77,9 @@ Meteor.methods({
         if(reservation.isValide)
             throw new Meteor.Error('Oups','tu fais quoi frere ?')
         
-        Items.update({_id:idItem},
-        { $pull: {reservedBy:{ _idEtudiant: reservation._idEtudiant,startDate:startDate }}
-        })
-        if(userId != this.userId){
-            Meteor.users.update({_id:userId,"reservations._idItem":idItem}, {
+        
+        if(userId !== this.userId){
+            Meteor.users.update({_id:userId,"reservations._idItem":idItem,"reservations.startDate":startDate}, {
                 $set :{
                     "reservations.$.status" : "annule"
                 }
@@ -91,6 +89,10 @@ Meteor.methods({
                 { $pull: {reservations:{ _idItem: idItem,startDate:startDate  }}
             })
         }
+
+        Items.update({_id:idItem},
+            { $pull: {reservedBy:{ _idEtudiant: reservation._idEtudiant,startDate:startDate }}
+        })
         
     },
 
