@@ -249,7 +249,9 @@ Meteor.methods({
         check(idEtudiant,String)
 
         let user = Meteor.users.findOne(idEtudiant)
+        if(user)
+            return user.username
 
-        return user.username
+        throw new Meteor.Error('Oups','Etudiant inconnu')
     }
 })
