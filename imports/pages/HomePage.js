@@ -27,16 +27,18 @@ export default class HomePage extends TrackerReact(Component) {
                 {title: 'Fin',dataIndex: 'endDate',key: 'endDate'},
                 {title: 'Etat',dataIndex: 'status',key: 'status',
                     render:(text)=>{
+                        console.log(text);
                         let etat = ''
                         switch (text) {
                             case 'fini':
                                 etat='default'
                                 break;
-                            case 'fireserveni':
+                            case 'reserve':
                                 etat='processing'
                                 break;
                             case 'valide':
                                 etat='success'
+                                break;
                             default:
                                 etat = 'error'
                                 break;
