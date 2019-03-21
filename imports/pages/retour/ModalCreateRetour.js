@@ -24,8 +24,7 @@ export default  ModalCreateRetour  = Form.create({ name: 'form_in_modal' })(
 
       render() {
         const {
-          visible, onCancel, onCreate, form, _idItem,endDate
-        } = this.props;
+          visible, onCancel, onCreate, form, _idItem,endDate, description,location} = this.props;
         const { TextArea } = Input;
 
         
@@ -47,6 +46,7 @@ export default  ModalCreateRetour  = Form.create({ name: 'form_in_modal' })(
                 <Form.Item label="Description">
                     {getFieldDecorator('description', {
                     rules: [{ required: true, message: 'description requise' }],
+                    initialValue:description
                     })(
                         <TextArea placeholder="Ex : rien a signaler" autosize={{ minRows: 2, maxRows: 6 }} />
                     )}
@@ -59,6 +59,7 @@ export default  ModalCreateRetour  = Form.create({ name: 'form_in_modal' })(
                 <Form.Item label="Emplacement de stockage">
                 {getFieldDecorator('location',{
                     rules: [{ required: true, message: 'emplacement requis' }],
+                    initialValue:location
                     })(
                     <Input placeholder="Ex : salle serveur" ></Input>
                     )}            

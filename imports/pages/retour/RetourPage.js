@@ -13,15 +13,19 @@ export default class RetourPage extends TrackerReact(Component) {
             itemSub:null,
             searchText: '',
             visible: false,
-            selectedItem:null
+            selectedItem:null,
+            description:null,
+            location:null
         }
     }
 
-    showModal = (idItem,endDate) => {
+    showModal = (idItem,endDate,description,location) => {
         
         this.setState({ visible: true,
                         selectedItem:idItem,
-                        endDate:endDate 
+                        endDate:endDate, 
+                        description:description,
+                        location:location
                     });
     }
 
@@ -114,7 +118,7 @@ export default class RetourPage extends TrackerReact(Component) {
             { title: 'Caution', dataIndex: 'suretyBond', key: 'suretyBond' },
             { title: 'Debut', dataIndex: 'startDate', key: 'startDate' },
             { title: 'Fin', dataIndex: 'endDate', key: 'endDate' },
-            { title: 'Action', key: 'operation', render: (record) => <Popconfirm title="Valider le retour ?" onConfirm={() => this.showModal(record._idItem,record.endDate)} onCancel={this.cancel} okText="Oui" cancelText="Non">
+            { title: 'Action', key: 'operation', render: (record) => <Popconfirm title="Valider le retour ?" onConfirm={() => this.showModal(record._idItem,record.endDate,record.description,record.location)} onCancel={this.cancel} okText="Oui" cancelText="Non">
             <Button>Valider Retour</Button>
           </Popconfirm> }];
           let groups = Roles.getGroupsForUser(Meteor.userId(),'admin')
@@ -131,6 +135,7 @@ export default class RetourPage extends TrackerReact(Component) {
                     reservation.suretyBond = item.suretyBond
                     reservation.description = item.description
                     reservation.imageName = item.imageName
+                    reservation.location = item.location
                     reservations.push(reservation)
                     key++
                 }             
@@ -146,6 +151,8 @@ export default class RetourPage extends TrackerReact(Component) {
                     onCreate={this.handleCreate}
                     _idItem = {this.state.selectedItem}
                     endDate = {this.state.endDate}
+                    description = {this.state.description}
+                    location = {this.state.location}
                 /> 
                 <Table
                     className="components-table-demo-nested"

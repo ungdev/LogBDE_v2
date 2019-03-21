@@ -63,7 +63,7 @@ Meteor.methods({
 
         let userId = this.userId;
 
-        if(Roles.userIsInRole('admin',item.asso)){
+        if(Roles.userIsInRole(this.userId,'admin',item.asso)){
             userId = idEtudiant
         }
 
@@ -71,6 +71,9 @@ Meteor.methods({
             if(el._idEtudiant == userId && el.startDate == startDate)
                 return el;
         })
+        if(!reservation)
+            throw new Meteor.Error('Oups','Reservation inconnu')
+
         if(reservation.isValide)
             throw new Meteor.Error('Oups','tu fais quoi frere ?')
         
@@ -237,5 +240,21 @@ Meteor.methods({
                 Roles.addUsersToRoles(userId, ['admin'],role);
             }
         }
+    },
+
+    seeProfil(idEtudiant){
+        if(!this.userId)
+            throw new Meteor.Error('Oups','You are not logged in')
+        
+        if(Roles.getGroupsForUser(this.userId,'admin').length == 0)
+            throw new Meteor.Error('Oups','You are not ADMIN')
+
+        check(idEtudiant,String)
+
+        let user = Meteor.users.findOne(idEtudiant)
+        if(user)
+            return user.username
+
+        throw new Meteor.Error('Oups','Etudiant inconnu')
     }
 })

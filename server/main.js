@@ -16,8 +16,6 @@ Meteor.startup(() => {
 
 
 Accounts.onCreateUser((options, user) => {
-    console.log("user : ",user);
-    // console.log("options : "+JSON.stringify(options));
     if (!user.services.utt) {
       throw new Error('Expected login with UTT oAuth only.');
     }
