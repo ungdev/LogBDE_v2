@@ -52,7 +52,7 @@ Meteor.methods({
             }
         })
     },
-    deleteReservation(idItem,startDate){
+    deleteReservation(idItem,startDate,idEtudiant){
         if(!this.userId)
             throw new Meteor.Error('Oups','You are not logged in')
         
@@ -61,20 +61,34 @@ Meteor.methods({
         if(!item)
             throw new Meteor.Error('Oups','Objet inconnu')
 
+        let userId = this.userId;
+
+        if(Roles.userIsInRole('admin',item.asso)){
+            userId = idEtudiant
+        }
+
         let reservation = item.reservedBy.find((el)=>{
-            if(el._idEtudiant == this.userId && el.startDate == startDate)
+            if(el._idEtudiant == userId && el.startDate == startDate)
                 return el;
         })
         if(reservation.isValide)
             throw new Meteor.Error('Oups','tu fais quoi frere ?')
         
         Items.update({_id:idItem},
-        { $pull: {reservedBy:{ _idEtudiant: this.userId,startDate:startDate }}
+        { $pull: {reservedBy:{ _idEtudiant: reservation._idEtudiant,startDate:startDate }}
         })
-
-        Meteor.users.update({_id:this.userId}, 
-            { $pull: {reservations:{ _idItem: idItem,startDate:startDate  }}
-        })
+        if(userId != this.userId){
+            Meteor.users.update({_id:userId,"reservations._idItem":idItem}, {
+                $set :{
+                    "reservations.$.status" : "annule"
+                }
+            })
+        }else{
+            Meteor.users.update({_id:this.userId}, 
+                { $pull: {reservations:{ _idItem: idItem,startDate:startDate  }}
+            })
+        }
+        
     },
 
     validerEmprunt(idItem,idEtudiant,startDate,endDate){
@@ -115,6 +129,7 @@ Meteor.methods({
     },
 
     createItem(name,description,location,suretyBond,asso){
+        
         if(!this.userId)
             throw new Meteor.Error('Oups','You are not logged in')
         

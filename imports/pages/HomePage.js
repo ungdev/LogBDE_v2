@@ -5,7 +5,7 @@ import TrackerReact from 'meteor/ultimatejs:tracker-react';
 export default class HomePage extends TrackerReact(Component) {
 
     deleteReservation = (_idItem,startDate) => {
-        Meteor.call('deleteReservation',_idItem,startDate,(error,result)=>{
+        Meteor.call('deleteReservation',_idItem,startDate,Meteor.userId(),(error,result)=>{
             if(error)
               message.error(error.reason)
             else{
@@ -28,12 +28,19 @@ export default class HomePage extends TrackerReact(Component) {
                 {title: 'Etat',dataIndex: 'status',key: 'status',
                     render:(text)=>{
                         let etat = ''
-                        if(text == 'fini')
-                            etat = 'default'
-                        else if(text == 'reserve')
-                            etat = 'processing'
-                        else if(text == 'valide')
-                            etat = 'success'
+                        switch (text) {
+                            case 'fini':
+                                etat='default'
+                                break;
+                            case 'fireserveni':
+                                etat='processing'
+                                break;
+                            case 'valide':
+                                etat='success'
+                            default:
+                                etat = 'error'
+                                break;
+                        }
                         return<span><Badge status={etat} />{text}</span>
                     }},
                 {title: 'Action',key: 'action',

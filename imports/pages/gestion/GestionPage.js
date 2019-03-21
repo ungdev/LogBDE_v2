@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Table,message, Badge, Menu, Dropdown, Icon,Button,Popconfirm} from 'antd';
+import {Table,message, Badge, Menu, Dropdown, Icon,Button,Popconfirm,Pagination} from 'antd';
 import { Items } from '/imports/collections/Collections.js'
 import CreeItem from '/imports/pages/gestion/CreeItem.js'
 import AddAdmin from '/imports/pages/gestion/AddAdmin.js'

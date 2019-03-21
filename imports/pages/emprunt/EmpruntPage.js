@@ -27,9 +27,16 @@ export default class EmpruntPage extends TrackerReact(Component) {
         
     }
 
-    cancel = (e) => {
-        console.log(e);
-        message.error('Click on No');
+    cancel = (reservation) => {
+        Meteor.call('deleteReservation',reservation._idItem,reservation.startDate,reservation._idEtudiant,(error)=>{
+          if(error){
+            message.error(error.reason);
+          }else{
+            message.success('Reservation annule');
+          }
+          
+        })
+        
       }
 
     handleSearch = (selectedKeys, confirm) => () => {
@@ -91,7 +98,7 @@ export default class EmpruntPage extends TrackerReact(Component) {
             { title: 'Caution', dataIndex: 'suretyBond', key: 'suretyBond' },
             { title: 'Debut', dataIndex: 'startDate', key: 'startDate' },
             { title: 'Fin', dataIndex: 'endDate', key: 'endDate' },
-            { title: 'Action', key: 'operation', render: (record) => <Popconfirm title="Valider cet emprunt ?" onConfirm={() => {this.confirm(record)}} onCancel={this.cancel} okText="Oui" cancelText="Non">
+            { title: 'Action', key: 'operation', render: (record) => <Popconfirm title="Valider cet emprunt ?" onConfirm={() => {this.confirm(record)}} onCancel={() => {this.cancel(record)}} okText="Oui" cancelText="Non">
             <Button>Valider Emprunt</Button>
           </Popconfirm> },
           ];
@@ -100,10 +107,11 @@ export default class EmpruntPage extends TrackerReact(Component) {
           let reservations = []
           let key = 0
           for(const item of items){
-              
+            
             for(let reservation of item.reservedBy){
                 let days = moment(reservation.startDate,'DD/MM/YYYY').diff(moment(),'days')
                 if( days <= 7 && days > -1 && !reservation.isValide){
+                  console.log(reservation);
                     reservation.name = item.name
                     reservation.key = key
                     reservation._idItem = item._id
