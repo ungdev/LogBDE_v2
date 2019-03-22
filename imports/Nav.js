@@ -1,4 +1,3 @@
-import AccountsUI from '/imports/AccountsUI.js';
 import React, { Component } from 'react';
 import { Menu, Icon} from 'antd';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
@@ -48,7 +47,7 @@ export default class Nav extends TrackerReact(Component) {
 
   renderHomePage(){
     if(!Meteor.userId())
-      return(<Menu.Item disabled>Please Sign-in</Menu.Item>)
+      return null
 
     return(<Menu.Item key="homepage">
             <a href="/" ><Icon type="eye" />Mes Emprunts et Reservations</a>
@@ -80,11 +79,11 @@ export default class Nav extends TrackerReact(Component) {
         {this.renderNew()}
         
         {this.renderAdminMenu()}
+         
+        <Menu.Item style = {{float:"right"}} key="user">
+              {Meteor.user() ?<a href="javascript:Meteor.logout()" ><Icon type="close" />Sign-Out</a>:<a href="javascript:Meteor.loginWithUtt()" ><Icon type="user" />Sign-In</a>}    
+        </Menu.Item> 
 
-        <Menu.Item id="account" disabled key="utt" >
-          <Icon type="user" />
-          <AccountsUI/>
-        </Menu.Item>
       </Menu>
     
   )
