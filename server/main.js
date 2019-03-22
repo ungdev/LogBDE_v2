@@ -6,12 +6,14 @@ import { MockItems} from '/server/LogBDE.js'
 
 
 Meteor.startup(() => {
+  if(Meteor.isDevelopment){
     if(Items.find().count() === 0){
       MockItems.forEach(element => {
         if(!element.isConsumable)
           Items.insert(element)
       });
     }
+  } 
 });
 
 
