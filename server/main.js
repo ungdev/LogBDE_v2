@@ -13,7 +13,22 @@ Meteor.startup(() => {
           Items.insert(element)
       });
     }
-  } 
+  }
+  ServiceConfiguration.configurations.update(
+    { "service": "utt" },
+    {
+      $set: {
+        "clientId": process.env.CLIENT_ID,
+        "secret": process.env.SECRET_ID,
+        "loginStyle":"redirect",
+        "redirectUrl":process.env.ROOT_URL
+      }
+    },
+    { upsert: true }
+  );
+
+
+
 });
 
 

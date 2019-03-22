@@ -63,8 +63,11 @@ FlowRouter.route('/', {
 })
 
 
+Accounts.onLogout(()=>FlowRouter.go('/'))
+
+
 FlowRouter.route('/users/:id', {
-  name: '/',
+  name: 'users',
   triggersEnter: [function(context, redirect) { 
     if(Roles.getGroupsForUser(Meteor.userId(),'admin').length == 0)
         redirect('/')
