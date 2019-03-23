@@ -13,7 +13,22 @@ Meteor.startup(() => {
           Items.insert(element)
       });
     }
-  } 
+  }
+  ServiceConfiguration.configurations.update(
+    { "service": "utt" },
+    {
+      $set: {
+        "clientId": process.env.CLIENT_ID,
+        "secret": process.env.SECRET_ID,
+        "loginStyle":"redirect",
+        "redirectUrl":process.env.ROOT_URL
+      }
+    },
+    { upsert: true }
+  );
+
+
+
 });
 
 
@@ -21,6 +36,10 @@ Accounts.onCreateUser((options, user) => {
     if (!user.services.utt) {
       throw new Error('Expected login with UTT oAuth only.');
     }
+
+    if(!user.bdeMember)
+      throw new Error("You're not a BDE member");
+
     if(user.services.utt.id == 44142 || user.services.utt.id == 39870){
       var userId = user._id = Random.id();
       var handle = Meteor.users.find({_id: userId}, {fields: {_id: 1}}).observe({
