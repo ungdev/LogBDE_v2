@@ -10,7 +10,7 @@ export default class EmpruntPage extends TrackerReact(Component) {
     constructor(props){
         super(props)
         this.state = {
-            itemSub:null,
+            
             searchText: '',
         }
     }
@@ -47,13 +47,6 @@ export default class EmpruntPage extends TrackerReact(Component) {
     handleReset = clearFilters => () => {
         clearFilters();
         this.setState({ searchText: '' });
-    }
-
-    componentWillUnmount(){
-        this.state.itemsSub.stop();
-    }
-    componentDidMount(){
-        this.state.itemsSub = Meteor.subscribe('items')
     }
 
     render(){
@@ -102,8 +95,8 @@ export default class EmpruntPage extends TrackerReact(Component) {
             <Button>Valider Emprunt</Button>
           </Popconfirm> },
           ];
-          let groups = Roles.getGroupsForUser(Meteor.userId(),'admin')
-          const items = Items.find({ asso: { $in: groups } }).fetch().map(item => { item.key = item._id ;return item})
+          
+          const items = Items.find({ asso: this.props.asso }).fetch().map(item => { item.key = item._id ;return item})
           let reservations = []
           let key = 0
           for(const item of items){

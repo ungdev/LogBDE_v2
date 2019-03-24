@@ -5,13 +5,14 @@ import { mount } from 'react-mounter'
 import HomePage from '/imports/pages/HomePage.js'
 import NewPage from '/imports/pages/newPage/NewPage.js'
 
+import InventairePage from '/imports/pages/gestion/InventairePage.js'
 import GestionPage from '/imports/pages/gestion/GestionPage.js'
 import EmpruntPage from '/imports/pages/emprunt/EmpruntPage.js'
 
 import RetourPage from '/imports/pages/retour/RetourPage.js'
-
+import AdminPage from '/imports/pages/admin/AdminPage.js'
 import NotFoundPage from '/imports/pages/NotFoundPage.js'
-import { MainLayout } from '/imports/MainLayout.js'
+import  MainLayout  from '/imports/MainLayout.js'
 
 
 FlowRouter.triggers.enter([function(context, redirect) {
@@ -21,35 +22,59 @@ FlowRouter.triggers.enter([function(context, redirect) {
   }], {except: ["/"]}); // check si l'utilisateur est log-in except sur /
 
 
-var adminRoutes = FlowRouter.group({
-    name: 'admin',
-    triggersEnter: [function(context, redirect) { 
-      if(Roles.getGroupsForUser(Meteor.userId(),'admin').length == 0)
+var assosRoutes = FlowRouter.group({
+    name: 'assos',
+    triggersEnter: [function(context, redirect) {
+      if(!Roles.userIsInRole(Meteor.userId(),'admin',context.params.asso))
         redirect('/')
     }]
-  });
+});
 
-  adminRoutes.route('/gestion-inventaire', {
-    name: 'gestion',
-    action() {
+var adminRoutes = FlowRouter.group({
+  name: 'admin',
+  triggersEnter: [function(context, redirect) {
+    if(!Roles.userIsInRole(Meteor.userId(),'admin','bde'))
+      redirect('/')
+  }]
+});
+
+adminRoutes.route('/admin-users', {
+  name: 'admin-users',
+  action(params) {
+      mount( MainLayout, {
+          content: <AdminPage/>
+      })}
+});
+
+  assosRoutes.route('/gestion-inventaire/:asso', {
+    name: 'gestion-inventaire',
+    action(params) {
         mount( MainLayout, {
-            content: <GestionPage />
+            content: <InventairePage asso={params.asso}/>
         })}
   });
 
-  adminRoutes.route('/gestion-emprunt', {
-    name: 'gestion',
-    action() {
+  assosRoutes.route('/gestion-users/:asso', {
+    name: 'gestion-inventaire',
+    action(params) {
         mount( MainLayout, {
-            content: <EmpruntPage />
+            content: <GestionPage asso={params.asso}/>
         })}
   });
 
-  adminRoutes.route('/gestion-retour', {
-    name: 'gestion',
-    action() {
+  assosRoutes.route('/gestion-emprunt/:asso', {
+    name: 'gestion-emprunt',
+    action(params) {
         mount( MainLayout, {
-            content: <RetourPage />
+            content: <EmpruntPage asso={params.asso}/>
+        })}
+  });
+
+  assosRoutes.route('/gestion-retour/:asso', {
+    name: 'gestion-retour',
+    action(params) {
+        mount( MainLayout, {
+            content: <RetourPage asso={params.asso}/>
         })}
   });
 

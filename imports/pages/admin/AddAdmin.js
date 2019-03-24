@@ -6,16 +6,8 @@ class FormAddAdmin extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            usersdata:null
-        }
     }
-    componentWillUnmount(){
-        this.state.usersdata.stop();
-    }
-    componentDidMount(){
-        this.state.usersdata = Meteor.subscribe('userData')
-    }
+
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -47,7 +39,7 @@ class FormAddAdmin extends Component {
     }
 
     render(){
-        const { fetching, data, value } = this.state;
+        
         const { getFieldDecorator } = this.props.form;
             return (
                 <Form onSubmit={this.handleSubmit}>
@@ -60,7 +52,6 @@ class FormAddAdmin extends Component {
                             <Select 
                                 mode="multiple" 
                                 placeholder="Choisissez une ou plusieurs personnes"
-                                notFoundContent={fetching ? <Spin size="small" /> : null}
                                 onSearch={this.getUsers}
                                 onChange={this.handleChange}
                                 style={{ width: '100%' }}

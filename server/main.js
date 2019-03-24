@@ -64,3 +64,5 @@ Accounts.onCreateUser((options, user) => {
     return user;
   
   });
+
+  Meteor.users.deny({ update: () => true });
