@@ -5,6 +5,8 @@ import '/client/main.css'
 
 Meteor.subscribe('userData')
 
+Meteor.subscribe('items')
+
 
 FlowRouter.wait();
 

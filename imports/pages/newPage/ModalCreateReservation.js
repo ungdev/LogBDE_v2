@@ -14,12 +14,6 @@ export default  ModalCreateReservation  = Form.create({ name: 'form_in_modal' })
             this.state = {}
         }
 
-        componentWillUnmount(){
-            this.state.itemsSub.stop();
-        }
-        componentDidMount(){
-            this.state.itemsSub = Meteor.subscribe('items')
-        }
 
     disabledDate = (current) => {
         

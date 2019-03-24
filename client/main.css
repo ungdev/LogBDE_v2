@@ -15,11 +15,9 @@
 }
 
 .logo{
-  width: 120px;
-    height: 31px;
-    background: url('ung.png');
-    margin: 16px 24px 16px 0;
-    float: left;
+  height: 32px;
+  background: url('ung.png');
+  margin: 16px;  
 }
 
 .custom-filter-dropdown {

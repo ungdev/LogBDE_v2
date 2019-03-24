@@ -14,7 +14,6 @@ export default class NewPage extends TrackerReact(Component) {
     constructor(props){
         super(props)
         this.state = {
-            itemSub:null,
             searchText: '',
             visible: false,
             selectedItem:null
@@ -68,14 +67,6 @@ export default class NewPage extends TrackerReact(Component) {
         clearFilters();
         this.setState({ searchText: '' });
     }
-
-    componentWillUnmount(){
-        this.state.itemsSub.stop();
-    }
-    componentDidMount(){
-        this.state.itemsSub = Meteor.subscribe('items')
-    }
-
     render(){
         const columns = [
             { title: 'Image', dataIndex: 'imageName', key: 'imageName', render:(text) => <img src={text} alt="Smiley face"/> },

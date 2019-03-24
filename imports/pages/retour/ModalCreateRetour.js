@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { Button,Switch, Modal, Form, Input} from 'antd';
-import moment from 'moment';
+import {Modal, Form, Input} from 'antd';
 
-import { Items } from '/imports/collections/Collections.js'
 
 export default  ModalCreateRetour  = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
@@ -13,14 +11,6 @@ export default  ModalCreateRetour  = Form.create({ name: 'form_in_modal' })(
             super(props)
             this.state = {}
         }
-
-        componentWillUnmount(){
-            this.state.itemsSub.stop();
-        }
-        componentDidMount(){
-            this.state.itemsSub = Meteor.subscribe('items')
-        }
-
 
       render() {
         const {

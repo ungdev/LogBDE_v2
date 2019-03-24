@@ -10,7 +10,6 @@ export default class RetourPage extends TrackerReact(Component) {
     constructor(props){
         super(props)
         this.state = {
-            itemSub:null,
             searchText: '',
             visible: false,
             selectedItem:null,
@@ -69,12 +68,6 @@ export default class RetourPage extends TrackerReact(Component) {
         this.setState({ searchText: '' });
     }
 
-    componentWillUnmount(){
-        this.state.itemsSub.stop();
-    }
-    componentDidMount(){
-        this.state.itemsSub = Meteor.subscribe('items')
-    }
 
     render(){
         const columns = [
@@ -121,8 +114,8 @@ export default class RetourPage extends TrackerReact(Component) {
             { title: 'Action', key: 'operation', render: (record) => <Popconfirm title="Valider le retour ?" onConfirm={() => this.showModal(record._idItem,record.endDate,record.description,record.location)} onCancel={this.cancel} okText="Oui" cancelText="Non">
             <Button>Valider Retour</Button>
           </Popconfirm> }];
-          let groups = Roles.getGroupsForUser(Meteor.userId(),'admin')
-          const items = Items.find({ asso: { $in: groups } }).fetch().map(item => { item.key = item._id ;return item})
+          
+          const items = Items.find({ asso: this.props.asso }).fetch().map(item => { item.key = item._id ;return item})
           let reservations = []
           let key = 0
           for(const item of items){
