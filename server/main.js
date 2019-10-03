@@ -40,7 +40,8 @@ Accounts.onCreateUser((options, user) => {
     //if(!user.bdeMember)
       //throw new Error("You're not a BDE member");
 
-    if(user.services.utt.id == 44142 || user.services.utt.id == 39870){
+    var admins = process.env.ADMINS_STUDENTID.split(',').map(id => parseInt(id, 10));
+    if(admins.includes(user.services.utt.id)){
       var userId = user._id = Random.id();
       var handle = Meteor.users.find({_id: userId}, {fields: {_id: 1}}).observe({
           added: function () {
