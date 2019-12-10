@@ -1,3 +1,7 @@
+
+EDIT : Je n'ai pas oublie ce projet, malheuresement j'ai eu un stage qui m'a pris plus de temps et d'energie que prevu, j'en vois la fin. La bonne nouvelle c'est que je sais exactement quoi faire pour mener a bout le projet.
+
+
 # LogBDE_v2
 Meteor, React, Mongo, Antd
 
